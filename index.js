@@ -13,19 +13,25 @@ const app = express();
 app.use(express.json());
 
 app.post("/signup",async function(req,res){
-    const email = req.body.email;
-    const password = req.body.password;
-    const name = req.body.name;
+    try{
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.name;
 
-    const hashedPassword = await bcrypt.hash(password,10);
+        const hashedPassword = await bcrypt.hash(password,10);
 
-    await UserModel.create({
-        email : email,
-        password : hashedPassword,
-        name : name
-    });
+        await UserModel.create({
+            email : email,
+            password : hashedPassword,
+            name : name
+        });
 
-    res.json({message : "You are signed up!"});
+        res.json({message : "You are signed up!"});
+    }
+    catch(err){
+        res.status(500).json({message : "Error while signing up!"});
+    }
+    
 })
 
 app.post("/signin",async function (req,res){
