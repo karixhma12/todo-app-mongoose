@@ -58,6 +58,7 @@ app.post("/signin",async function (req,res){
 
 app.post("/todo",auth,async function(req,res){
     const userId = req.userId;
+    console.log("userId from token : " , userId);
     const title = req.body.title;
     const done = req.body.done;
 
@@ -74,7 +75,7 @@ app.get("/todos",auth,async function(req,res){
     const userId = req.userId;
     const todos = await TodoModel.find({
         userId : userId
-    });
+    }).populate("userId");
     res.json({
         todos
     })

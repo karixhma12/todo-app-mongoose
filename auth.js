@@ -8,7 +8,7 @@ function auth(req,res,next){
         return res.status(403).send({message : "Incorrect credentials!"}); 
     }
     else{
-        req.userId = response._id;
+        req.userId = response.id;
         next();
     }
 }
