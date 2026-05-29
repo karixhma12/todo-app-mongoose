@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "ilovekiara";
 const {auth} = require("./auth.js");
 const bcrypt = require("bcrypt");
+const z = require("zod");
 
 mongoose.connect("mongodb+srv://karishma7022_db_user:welcome%20123@cluster0.ntuwokz.mongodb.net/todo-app");
 
@@ -12,8 +13,17 @@ const app = express();
 
 app.use(express.json());
 
+const signupSchema = z.object({
+    email : z.string().email(),
+    password : z.string().min(10),
+    name : z.string().min(1)
+})
+
 app.post("/signup",async function(req,res){
     try{
+
+        signupSchema.parse(req.body);
+        
         const email = req.body.email;
         const password = req.body.password;
         const name = req.body.name;
